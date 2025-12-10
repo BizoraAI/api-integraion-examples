@@ -28,7 +28,7 @@ function renderWithCitations(text, sources) {
     let counter = 1;
     let match;
 
-    // Build map first
+    // Build map first from original text to ensure consistent numbering
     while ((match = nodeIdPattern.exec(text)) !== null) {
         const nodeId = match[1];
         if (!nodeIdToNumber.has(nodeId)) {
@@ -36,16 +36,26 @@ function renderWithCitations(text, sources) {
         }
     }
 
-    // Replace UUIDs with HTML Buttons
-    const processedHtml = text.replace(nodeIdPattern, (match, nodeId) => {
+    // Convert Markdown to HTML
+    let htmlContent = text;
+    if (typeof marked !== 'undefined' && marked.parse) {
+        htmlContent = marked.parse(text);
+    } else if (typeof marked !== 'undefined') {
+        // Fallback for older marked versions
+        htmlContent = marked(text);
+    } else {
+        // Fallback if marked not loaded
+        htmlContent = text
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n- /g, '<br>• ');
+    }
+
+    // Replace UUIDs with HTML Buttons in the rendered HTML
+    // We use the same pattern since [uuid] should be preserved as text by marked
+    return htmlContent.replace(nodeIdPattern, (match, nodeId) => {
         const number = nodeIdToNumber.get(nodeId);
         return `<button class="inline-citation" onclick="handleCitationClick('${nodeId}', ${number})">${number}</button>`;
     });
-
-    // Basic markdown formatting for newlines and bullets (for demo purposes)
-    return processedHtml
-        .replace(/\n\n/g, '<br><br>')
-        .replace(/\n- /g, '<br>• ');
 }
 
 // ---------------------------------------------------------
