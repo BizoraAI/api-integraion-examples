@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizora AI - Source Integration Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i data-lucide="sparkles"></i>
+                </div>
+                <span>Bizora AI</span>
+            </div>
+            <nav>
+                <a href="#" class="nav-item active">
+                    <i data-lucide="message-square"></i>
+                    Chat
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-interface">
+            <header class="chat-header">
+                <div class="model-selector">
+                    <span>Research Assistant</span>
+                    <span class="badge">Beta</span>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" title="Clear Chat" id="clearBtn">
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="messages-container" id="messagesContainer">
+                <!-- Welcome Message -->
+                <div class="message assistant">
+                    <div class="avatar">
+                        <i data-lucide="bot"></i>
+                    </div>
+                    <div class="content">
+                        <div class="bubble">
+                            <p>Hello! I can help you research tax codes, financial regulations, and more. I'll provide
+                                citations for everything I find.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <form id="chatForm" class="input-wrapper">
+                    <input type="text" id="userInput" placeholder="Ask a question..." autocomplete="off">
+                    <button type="submit" id="sendBtn" disabled>
+                        <i data-lucide="send"></i>
+                    </button>
+                </form>
+                <div class="footer-text">
+                    AI generated content may be inaccurate. Always verify important information.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Source Modal Template (Hidden) -->
+    <div id="sourceModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <span class="citation-badge" id="modalCitationBadge">1</span>
+                    <h3 id="modalTitle">Document Title</h3>
+                </div>
+                <button class="close-btn" id="modalClose">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <pre id="modalText"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="mock_data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
