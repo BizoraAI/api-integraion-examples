@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizora AI-PDF Coordinates & Highlights Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Marked for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Chat Area -->
+        <div class="sidebar">
+            <div class="header">
+                <h2><i data-lucide="message-square"></i> Chat with PDF</h2>
+            </div>
+
+            <div class="chat-area" id="messagesContainer">
+                <!-- Initial Welcome Message -->
+                <div class="message assistant">
+                    <div class="avatar"><i data-lucide="bot"></i></div>
+                    <div class="content">
+                        <div class="bubble">
+                            <p>Hello! I can help you find information in your documents. Ask me a question about Section
+                                179.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <form id="chatForm" class="input-wrapper">
+                    <input type="text" id="userInput" placeholder="Ask a question..." autocomplete="off">
+                    <button type="submit" id="sendBtn" disabled>
+                        <i data-lucide="arrow-up"></i>
+                    </button>
+                </form>
+                <div class="footer-text">
+                    Bizora AI Demo
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content / PDF Viewer -->
+        <div class="main-content">
+            <div class="pdf-viewer-container" id="pdfViewerContainer">
+                <div class="pdf-header">
+                    <h3 id="pdfTitle">Document Viewer</h3>
+                    <div class="pdf-controls" style="display: flex; align-items: center; gap: 1rem;">
+                        <span>Page <span id="currentPage">1</span> of <span id="totalPages">5</span></span>
+                        <button id="closePdfBtn" class="icon-btn" title="Close PDF">
+                            <i data-lucide="x"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mock PDF Page (simulating a rendered canvas/div) -->
+                <div class="pdf-page-wrapper">
+                    <div class="pdf-page" id="pdfPage" data-page="1">
+                        <!-- Mock Content -->
+                        <div class="pdf-text-layer">
+                            <h1>Internal Revenue Code - Section 179</h1>
+                            <p>An expense deduction is provided for the cost of...</p>
+                            <p class="target-text">The maximum deduction allowed under this section for any taxable year
+                                shall not exceed $1,000,000.</p>
+                            <p>For purposes of this section, the term "section 179 property" means property...</p>
+                        </div>
+                        <!-- Highlights will be injected here -->
+                        <div id="highlightLayer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template for Source Cards (optional, handled in JS) -->
+
+    <script src="script.js"></script>
+</body>
+
+</html>
