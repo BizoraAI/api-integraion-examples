@@ -1,0 +1,437 @@
+:root {
+    --bg-color: #f8fafc;
+    --sidebar-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --assistant-bg: #ffffff;
+    --user-bg: #2563eb;
+    --user-text: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --radius-lg: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 100%;
+    /* Initially full width */
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+}
+
+.header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+}
+
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: #f8fafc;
+}
+
+.message {
+    display: flex;
+    gap: 0.75rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.assistant .avatar {
+    background: #eff6ff;
+    color: var(--primary-color);
+}
+
+.user {
+    flex-direction: row-reverse;
+}
+
+.user .avatar {
+    background: var(--text-primary);
+    color: white;
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+.bubble {
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.assistant .bubble {
+    background: var(--assistant-bg);
+    border: 1px solid var(--border-color);
+    border-top-left-radius: 2px;
+    box-shadow: var(--shadow-sm);
+}
+
+.user .bubble {
+    background: var(--user-bg);
+    color: var(--user-text);
+    border-top-right-radius: 2px;
+}
+
+/* Citations & Sources */
+.inline-citation {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background-color: #eff6ff;
+    color: var(--primary-color);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin: 0 2px;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: all 0.2s;
+}
+
+.inline-citation:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.sources-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.source-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+}
+
+.source-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.source-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.citation-number {
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.source-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.source-snippet {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+/* Input Area */
+.input-area {
+    padding: 1.5rem;
+    background: white;
+    border-top: 1px solid var(--border-color);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    padding-right: 3rem;
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+#sendBtn {
+    position: absolute;
+    right: 6px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+#sendBtn:disabled {
+    background: var(--border-color);
+    cursor: default;
+}
+
+#sendBtn:not(:disabled):hover {
+    background: var(--primary-hover);
+}
+
+.footer-text {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.75rem;
+}
+
+/* Main Content (PDF Viewer) */
+.main-content {
+    flex: 1;
+    /* Default to flex 1 but can be toggled */
+    padding: 2rem;
+    background: #e2e8f0;
+    display: none;
+    /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--border-color);
+}
+
+.main-content.open {
+    display: flex;
+}
+
+/* When PDF is open, sidebar shrinks */
+.app-container.has-pdf .sidebar {
+    width: 450px;
+    margin: 0;
+}
+
+.pdf-viewer-container {
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pdf-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background: #f1f5f9;
+    color: var(--text-primary);
+}
+
+.pdf-page-wrapper {
+    flex: 1;
+    overflow: auto;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    background: #f1f5f9;
+}
+
+/* Mock PDF Page */
+.pdf-page {
+    width: 595px;
+    /* A4 width */
+    min-height: 842px;
+    /* A4 height */
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding: 3rem;
+    font-family: "Times New Roman", serif;
+}
+
+.pdf-text-layer h1 {
+    font-size: 24px;
+    margin-bottom: 2rem;
+}
+
+.pdf-text-layer p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+.lorem {
+    color: #cbd5e1;
+    margin-top: 2rem;
+}
+
+/* Highlight Layer */
+#highlightLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.highlight {
+    position: absolute;
+    background-color: rgba(255, 255, 0, 0.4);
+    /* Yellow standard highlight */
+    border: 1px solid rgba(220, 220, 0, 0.5);
+    mix-blend-mode: multiply;
+    border-radius: 2px;
+    animation: fadeInHighlight 0.5s ease-out;
+}
+
+@keyframes fadeInHighlight {
+    from {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
