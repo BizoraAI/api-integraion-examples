@@ -3,22 +3,50 @@
  */
 
 // ---------------------------------------------------------
+// ---------------------------------------------------------
 // 1. MOCK DATA 
 // ---------------------------------------------------------
 
-const MOCK_SOURCE = {
-    node_id: "uuid-1234",
-    title: "Internal Revenue Code - Section 179",
-    text: "The maximum deduction allowed under this section for any taxable year shall not exceed $1,000,000. This limitation applies to property placed in service during the taxable year.",
-    metadata: {
-        file_path: "IRC_Code_Section_179.pdf",
-        page_label: "1",
-        // Coordinates targeting "The maximum deduction... $1,000,000."
-        coordinates: "(68, 200, 527, 240)"
+const MOCK_SOURCES = [
+    {
+        node_id: "uuid-1234",
+        title: "Internal Revenue Code - Section 179",
+        text: "The maximum deduction allowed under this section for any taxable year shall not exceed $1,000,000. This limitation applies to property placed in service during the taxable year.",
+        metadata: {
+            file_path: "IRC_Code_Section_179.pdf",
+            page_label: "1",
+            // Coordinates targeting "The maximum deduction... $1,000,000."
+            // Original: (68, 200, 527, 240)
+            coordinates: "(68, 200, 527, 240)"
+        }
+    },
+    {
+        node_id: "uuid-5678",
+        title: "IRS Publication 946 - How To Depreciate Property",
+        text: "You can elect to recover all or part of the cost of certain qualifying property, up to a limit, by deducting it in the year you place the property in service.",
+        metadata: {
+            file_path: "p946.pdf",
+            page_label: "2",
+            // Estimated coordinates for the second paragraph
+            // Adjusted to align with text
+            coordinates: "(68, 310, 527, 360)"
+        }
+    },
+    {
+        node_id: "uuid-9012",
+        title: "Tax Cuts and Jobs Act - Summary",
+        text: "The Act permanently increased the maximum Section 179 deduction to $1 million and the phase-out threshold to $2.5 million, indexed for inflation.",
+        metadata: {
+            file_path: "tax_cuts_summary.pdf",
+            page_label: "5",
+            // Estimated coordinates for the third paragraph
+            // Adjusted to align with text
+            coordinates: "(68, 420, 527, 470)"
+        }
     }
-};
+];
 
-const MOCK_RESPONSE_TEXT = "According to the Internal Revenue Code, the maximum deduction allowed under Section 179 for any taxable year is limited to **$1,000,000** [uuid-1234]. This deduction applies to the cost of qualifying property placed in service during the tax year.";
+const MOCK_RESPONSE_TEXT = "According to the Internal Revenue Code, the maximum deduction allowed under Section 179 for any taxable year is limited to **$1,000,000** [uuid-1234].\n\nIRS Publication 946 clarifies that you can elect to recover costs of qualifying property up to this limit [uuid-5678].\n\nFurthermore, the Tax Cuts and Jobs Act permanently increased this deduction and adjusted the phase-out thresholds [uuid-9012].";
 
 // ---------------------------------------------------------
 // 2. COORDINATE UTILITIES
@@ -117,13 +145,23 @@ function streamMockResponse(msgDiv) {
     const bubble = msgDiv.querySelector('.bubble');
 
     // 1. Render Markdown with Citations
-    // Replace [uuid] with a button
-    const processedText = MOCK_RESPONSE_TEXT.replace(
-        `[${MOCK_SOURCE.node_id}]`,
-        `<button class="inline-citation" onclick="handleCitationClick()">${1}</button>`
-    );
+    // We iterate over MOCK_SOURCES to replace each [node_id] with a citation button
+    let processedText = MOCK_RESPONSE_TEXT;
 
-    // Simple mock streaming effect
+    // Convert newlines to breaks for simple display
+    processedText = processedText.replace(/\n/g, '<br>');
+
+    MOCK_SOURCES.forEach((source, index) => {
+        const citationNumber = index + 1;
+        // Global replace in case the source is cited multiple times
+        const regex = new RegExp(`\\[${source.node_id}\\]`, 'g');
+        processedText = processedText.replace(
+            regex,
+            `<button class="inline-citation" onclick="handleCitationClick('${source.node_id}')">${citationNumber}</button>`
+        );
+    });
+
+    // Simple mock streaming effect replacement
     bubble.innerHTML = processedText;
 
     // 2. Render Source Cards below bubble
@@ -137,8 +175,11 @@ function streamMockResponse(msgDiv) {
     sourcesTitle.innerHTML = '<i data-lucide="book-open" style="width:14px;"></i> Sources';
     contentDiv.appendChild(sourcesTitle);
 
-    // Render the Card
-    renderSourceCard(sourcesGrid, MOCK_SOURCE, 1);
+    // Render Cards for each source
+    MOCK_SOURCES.forEach((source, index) => {
+        renderSourceCard(sourcesGrid, source, index + 1);
+    });
+
     contentDiv.appendChild(sourcesGrid);
 
     lucide.createIcons();
@@ -148,7 +189,8 @@ function streamMockResponse(msgDiv) {
 function renderSourceCard(container, source, index) {
     const card = document.createElement('div');
     card.className = 'source-card';
-    card.onclick = handleCitationClick; // Same handler as inline citation
+    // Pass the specific node_id to the handler
+    card.onclick = () => handleCitationClick(source.node_id);
 
     card.innerHTML = `
         <div class="source-header">
@@ -175,13 +217,19 @@ closePdfBtn.addEventListener('click', () => {
     highlightLayer.innerHTML = '';
 });
 
-window.handleCitationClick = () => {
+// Updated to accept nodeId
+window.handleCitationClick = (nodeId) => {
     // 1. Open PDF Viewer
     mainContent.classList.add('open');
     appContainer.classList.add('has-pdf');
 
-    // In a real app, pass the UUID and find the source. Here we just use MOCK_SOURCE.
-    const source = MOCK_SOURCE;
+    // Find the source by ID
+    const source = MOCK_SOURCES.find(s => s.node_id === nodeId);
+    if (!source) {
+        console.error("Source not found for id:", nodeId);
+        return;
+    }
+
     console.log("Navigating to source:", source);
 
     const coords = parseCoordinates(source.metadata.coordinates);
