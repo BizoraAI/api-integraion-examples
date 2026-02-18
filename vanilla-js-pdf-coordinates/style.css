@@ -403,7 +403,7 @@ input:focus {
     margin-top: 2rem;
 }
 
-/* Highlight Layer */
+/* Highlight Layer - Page-Level Highlighting */
 #highlightLayer {
     position: absolute;
     top: 0;
@@ -414,20 +414,27 @@ input:focus {
     z-index: 2;
 }
 
-.highlight {
+/**
+ * Full-page highlight overlay
+ * Uses 15% opacity yellow background with amber border
+ * Covers the entire page to indicate the source location
+ */
+.page-highlight {
     position: absolute;
-    background-color: rgba(255, 255, 0, 0.4);
-    /* Yellow standard highlight */
-    border: 1px solid rgba(220, 220, 0, 0.5);
-    mix-blend-mode: multiply;
-    border-radius: 2px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 0, 0.15); /* 15% opacity yellow */
+    border: 3px solid #FFC107; /* Amber border */
+    box-sizing: border-box;
     animation: fadeInHighlight 0.5s ease-out;
 }
 
 @keyframes fadeInHighlight {
     from {
         opacity: 0;
-        transform: scale(1.05);
+        transform: scale(1.02);
     }
 
     to {
