@@ -124,40 +124,6 @@ function navigateToPage(pageLabel) {
 </Document>
 ```
 
-## Migration from Coordinate-Based Highlighting
-
-If you're migrating from coordinate-based highlighting:
-
-### Before (Coordinates)
-```javascript
-// Complex parsing and normalization
-const coords = parseCoordinates(source.metadata.coordinates);
-const normalized = normalizeCoordinates(coords, pageDims);
-renderHighlight(normalized);
-```
-
-### After (Page Labels)
-```javascript
-// Simple page-level highlighting
-const pageLabel = source.metadata.page_label;
-renderPageHighlight(pageLabel);
-scrollToHighlightedPage();
-```
-
-### Benefits
-- **~100 lines of code removed** (no coordinate parsing/normalization)
-- **No coordinate system conversions** required
-- **Works across all screen sizes** without recalculation
-- **Simpler debugging** and maintenance
-
-## Best Practices
-
-1. **Always check for page_label**: Gracefully handle missing metadata
-2. **Use smooth scrolling**: Provides better user experience
-3. **Clear highlights on navigation**: Prevent confusion with multiple highlights
-4. **Update page indicators**: Show current page number in the UI
-5. **Handle edge cases**: Empty PDFs, invalid page labels, etc.
-
 ## API Response Structure
 
 The Bizora API returns sources with this structure:
