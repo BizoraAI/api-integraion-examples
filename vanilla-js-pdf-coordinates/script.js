@@ -14,11 +14,6 @@
 // 1. MOCK DATA 
 // ---------------------------------------------------------
 
-/**
- * Mock sources representing API response data.
- * Each source contains a page_label that indicates which PDF page contains the information.
- * The coordinates field is deprecated and no longer used for highlighting.
- */
 const MOCK_SOURCES = [
     {
         node_id: "uuid-1234",
